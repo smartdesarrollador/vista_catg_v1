@@ -6,7 +6,8 @@
   >
     <!-- Background Effects Container -->
     <div
-      class="effects-container fixed inset-0 overflow-hidden pointer-events-none -z-10"
+      class="effects-container fixed inset-0 overflow-hidden pointer-events-none"
+      style="z-index: -1;"
     >
       <!-- Ultra-Advanced Particle System -->
       <canvas #particleCanvas class="particle-canvas"></canvas>
@@ -134,7 +135,8 @@
 
     <!-- Main Content Container -->
     <div
-      class="relative z-20 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-2 pb-8"
+      class="relative w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-2 pb-8"
+      style="z-index: 10; position: relative;"
     >
       <!-- Header Section - Centered and Enhanced -->
       <div

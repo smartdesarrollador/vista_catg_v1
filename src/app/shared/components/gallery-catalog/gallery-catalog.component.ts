@@ -148,8 +148,10 @@ export class GalleryCatalogComponent implements OnInit, OnDestroy, AfterViewInit
   }
   
   ngAfterViewInit(): void {
-    if (this.isBrowser && this.particleCanvas) {
-      this.initParticleSystem();
+    if (this.isBrowser && this.particleCanvas && typeof window !== 'undefined' && typeof document !== 'undefined') {
+      setTimeout(() => {
+        this.initParticleSystem();
+      }, 100);
     }
   }
   
@@ -421,31 +423,38 @@ export class GalleryCatalogComponent implements OnInit, OnDestroy, AfterViewInit
   
   // Sistema de Partículas Interactivas
   private initParticleSystem(): void {
-    if (!this.isBrowser || !this.particleCanvas) return;
+    if (!this.isBrowser || !this.particleCanvas || typeof window === 'undefined') return;
     
-    const canvas = this.particleCanvas.nativeElement;
-    const ctx = canvas.getContext('2d');
+    try {
+      const canvas = this.particleCanvas.nativeElement;
+      if (!canvas) return;
+      
+      const ctx = canvas.getContext('2d');
+      if (!ctx) return;
     
-    if (!ctx) return;
-    
-    // Configurar canvas
-    this.resizeCanvas();
-    
-    // Crear partículas iniciales
-    this.createParticles();
-    
-    // Iniciar animación
-    this.animate();
-    
-    // Listener para resize
-    window.addEventListener('resize', () => this.resizeCanvas());
-    
-    // Listener para mouse
-    canvas.addEventListener('mousemove', (e) => this.onMouseMove(e));
+      // Configurar canvas
+      this.resizeCanvas();
+      
+      // Crear partículas iniciales
+      this.createParticles();
+      
+      // Iniciar animación
+      this.animate();
+      
+      // Listener para resize
+      if (typeof window !== 'undefined') {
+        window.addEventListener('resize', () => this.resizeCanvas());
+      }
+      
+      // Listener para mouse
+      canvas.addEventListener('mousemove', (e) => this.onMouseMove(e));
+    } catch (error) {
+      console.warn('Error initializing particle system:', error);
+    }
   }
   
   private resizeCanvas(): void {
-    if (!this.particleCanvas) return;
+    if (!this.particleCanvas || typeof window === 'undefined') return;
     
     const canvas = this.particleCanvas.nativeElement;
     canvas.width = window.innerWidth;
@@ -453,8 +462,10 @@ export class GalleryCatalogComponent implements OnInit, OnDestroy, AfterViewInit
   }
   
   private createParticles(): void {
+    if (typeof window === 'undefined') return;
+    
     this.particles = [];
-    const particleCount = this.isMobileDevice() ? 30 : 80;
+    const particleCount = (typeof window !== 'undefined' && window.innerWidth < 768) ? 30 : 80;
     
     for (let i = 0; i < particleCount; i++) {
       this.particles.push({
@@ -585,7 +596,7 @@ export class GalleryCatalogComponent implements OnInit, OnDestroy, AfterViewInit
   }
   
   private isMobileDevice(): boolean {
-    return this.isBrowser && window.innerWidth <= 768;
+    return this.isBrowser && typeof window !== 'undefined' && window.innerWidth <= 768;
   }
   
   // Seguimiento de Mouse 3D para tarjetas
