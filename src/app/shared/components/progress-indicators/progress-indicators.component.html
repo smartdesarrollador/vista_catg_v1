@@ -1,0 +1,210 @@
+<!-- Progress Indicators Container -->
+<div [ngClass]="getContainerClasses()" [@staggerItems]="animationState()">
+  
+  <!-- Loading State -->
+  <div *ngIf="statsService.loading()" class="loading-container">
+    <div class="loading-spinner">
+      <div class="spinner-ring"></div>
+      <span class="loading-text">Cargando estadísticas...</span>
+    </div>
+  </div>
+
+  <!-- Error State -->
+  <div *ngIf="statsService.error() && !statsService.loading()" class="error-container">
+    <div class="error-message">
+      <span class="error-icon">⚠️</span>
+      <span>{{ statsService.error() }}</span>
+      <button (click)="refreshStats()" class="retry-btn">
+        Reintentar
+      </button>
+    </div>
+  </div>
+
+  <!-- Success State - Progress Indicators -->
+  <div *ngIf="!statsService.loading() && !statsService.error()" class="indicators-grid">
+    
+    <!-- Header with Refresh -->
+    <div class="indicators-header" *ngIf="variant === 'detailed'">
+      <h3 class="header-title">
+        <span class="title-icon">📊</span>
+        Indicadores de Progreso
+      </h3>
+      
+      <div class="header-actions">
+        <button 
+          (click)="refreshStats()" 
+          class="refresh-btn"
+          [class.refreshing]="refreshingSignal()"
+          [disabled]="refreshingSignal()"
+        >
+          <span class="refresh-icon" [class.spinning]="refreshingSignal()">🔄</span>
+          <span *ngIf="!refreshingSignal()">Actualizar</span>
+          <span *ngIf="refreshingSignal()">Actualizando...</span>
+        </button>
+        
+        <button 
+          (click)="exportProgress()" 
+          class="export-btn"
+          title="Exportar progreso a CSV"
+        >
+          <span>📥</span>
+          <span>Exportar</span>
+        </button>
+      </div>
+      
+      <div class="last-update" *ngIf="statsService.lastUpdate()">
+        <span class="update-label">Última actualización:</span>
+        <span class="update-time">{{ statsService.lastUpdate() | date:'short' }}</span>
+      </div>
+    </div>
+
+    <!-- Progress Indicators List -->
+    <div class="indicators-list">
+      <div
+        *ngFor="let indicator of statsService.progressIndicators(); 
+               let i = index; 
+               trackBy: trackByIndicatorId"
+        class="indicator-wrapper"
+        [@slideInUp]="animationState()"
+        [style.animation-delay]="getStaggerDelay(i)"
+        [hidden]="(variant === 'compact' && !shouldShowInCompact(indicator)) || 
+                  (variant === 'minimal' && !shouldShowInMinimal(indicator))"
+      >
+        
+        <!-- Detailed Variant -->
+        <div *ngIf="variant === 'detailed'" [ngClass]="getIndicatorClasses(indicator)">
+          
+          <!-- Indicator Header -->
+          <div class="indicator-header">
+            <div class="indicator-info">
+              <div class="indicator-icon" [style.color]="indicator.color">
+                {{ indicator.icon }}
+              </div>
+              <div class="indicator-text">
+                <h4 class="indicator-title">{{ indicator.title }}</h4>
+                <p class="indicator-description">{{ indicator.description }}</p>
+              </div>
+            </div>
+            
+            <div class="indicator-status">
+              <span class="status-badge" [ngClass]="getStatusColor(indicator)">
+                {{ getStatusText(indicator) }}
+              </span>
+            </div>
+          </div>
+          
+          <!-- Progress Bar -->
+          <div class="progress-container">
+            <div class="progress-bar">
+              <div 
+                class="progress-fill"
+                [style.width.%]="getProgressWidth(indicator)"
+                [style.background]="indicator.color"
+                [@progressFill]="{
+                  value: animationState(),
+                  params: { progressWidth: getProgressWidth(indicator) }
+                }"
+              ></div>
+              
+              <!-- Progress Labels -->
+              <div class="progress-labels">
+                <span class="current-value">
+                  {{ getFormattedValue(indicator) }} {{ indicator.unit }}
+                </span>
+                <span class="max-value">
+                  / {{ statsService.formatNumber(indicator.maxValue) }}
+                </span>
+              </div>
+            </div>
+            
+            <!-- Percentage Display -->
+            <div class="percentage-display">
+              {{ statsService.formatPercentage(getProgressWidth(indicator)) }}
+            </div>
+          </div>
+          
+          <!-- Trend Information -->
+          <div class="trend-container" *ngIf="showTrends">
+            <div [ngClass]="getTrendClass(indicator)">
+              <span class="trend-icon">{{ statsService.getTrendIcon(indicator.trend) }}</span>
+              <span class="trend-text" [style.color]="statsService.getTrendColor(indicator.trend)">
+                {{ getFormattedChange(indicator) }} {{ indicator.unit }}
+              </span>
+              <span class="trend-period">vs. período anterior</span>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Compact Variant -->
+        <div *ngIf="variant === 'compact'" [ngClass]="getIndicatorClasses(indicator)">
+          <div class="compact-content">
+            <span class="compact-icon">{{ indicator.icon }}</span>
+            <div class="compact-info">
+              <span class="compact-value">{{ getFormattedValue(indicator) }}</span>
+              <span class="compact-title">{{ indicator.title }}</span>
+            </div>
+            <div class="compact-progress">
+              <div 
+                class="compact-bar"
+                [style.width.%]="getProgressWidth(indicator)"
+                [style.background]="indicator.color"
+              ></div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Minimal Variant -->
+        <div *ngIf="variant === 'minimal'" [ngClass]="getIndicatorClasses(indicator)">
+          <div class="minimal-content">
+            <span class="minimal-icon">{{ indicator.icon }}</span>
+            <span class="minimal-value">{{ getFormattedValue(indicator) }}</span>
+            <span class="minimal-trend" [style.color]="statsService.getTrendColor(indicator.trend)">
+              {{ statsService.getTrendIcon(indicator.trend) }}
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Summary Stats for Detailed View -->
+    <div *ngIf="variant === 'detailed' && statsService.currentStats() as stats" class="summary-stats">
+      <div class="summary-card">
+        <div class="summary-header">
+          <h4>📈 Resumen General</h4>
+        </div>
+        <div class="summary-content">
+          <div class="summary-item">
+            <span class="summary-label">Productividad:</span>
+            <span 
+              class="summary-value" 
+              [style.color]="statsService.getProductivityColor(stats.completionMetrics.productivity)"
+            >
+              {{ statsService.getProductivityIcon(stats.completionMetrics.productivity) }}
+              {{ stats.completionMetrics.productivity === 'high' ? 'Alta' : 
+                 stats.completionMetrics.productivity === 'medium' ? 'Media' : 'Baja' }}
+            </span>
+          </div>
+          <div class="summary-item">
+            <span class="summary-label">Tiempo estimado:</span>
+            <span class="summary-value">{{ stats.completionMetrics.estimatedTimeToCompletion }}</span>
+          </div>
+          <div class="summary-item">
+            <span class="summary-label">Crecimiento:</span>
+            <span class="summary-value positive">+{{ statsService.totalProjectsGrowth() }}%</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Empty State -->
+  <div *ngIf="!statsService.loading() && !statsService.error() && statsService.progressIndicators().length === 0" 
+       class="empty-state">
+    <div class="empty-icon">📊</div>
+    <h3>No hay indicadores disponibles</h3>
+    <p>Los indicadores de progreso aparecerán aquí una vez que haya datos disponibles.</p>
+    <button (click)="refreshStats()" class="refresh-btn">
+      Cargar datos
+    </button>
+  </div>
+</div>

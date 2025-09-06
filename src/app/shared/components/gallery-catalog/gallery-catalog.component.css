@@ -1,0 +1,215 @@
+/* Masonry Grid Layout */
+.masonry-grid {
+  column-gap: 1.5rem;
+  column-fill: balance;
+}
+
+.masonry-item {
+  display: inline-block;
+  width: 100%;
+  break-inside: avoid;
+  page-break-inside: avoid;
+  margin-bottom: 1.5rem;
+}
+
+/* Enhanced project cards for masonry */
+.project-card.masonry-item {
+  /* Variaciones de altura para crear efecto masonry m�s din�mico */
+  min-height: 300px;
+}
+
+/* Patrón de alturas más variado y orgánico */
+.project-card.masonry-item:nth-child(6n+1) {
+  min-height: 450px;
+}
+
+.project-card.masonry-item:nth-child(6n+2) {
+  min-height: 320px;
+}
+
+.project-card.masonry-item:nth-child(6n+3) {
+  min-height: 400px;
+}
+
+.project-card.masonry-item:nth-child(6n+4) {
+  min-height: 380px;
+}
+
+.project-card.masonry-item:nth-child(6n+5) {
+  min-height: 330px;
+}
+
+.project-card.masonry-item:nth-child(6n+6) {
+  min-height: 420px;
+}
+
+/* Alturas especiales para cards destacados */
+.project-card.masonry-item.featured {
+  min-height: 480px;
+}
+
+/* Efecto hover mejorado para masonry */
+.project-card.masonry-item:hover {
+  transform: translateY(-8px) scale(1.02);
+}
+
+/* Optimizaciones para dispositivos m�viles */
+@media (max-width: 768px) {
+  .masonry-grid {
+    column-count: 1;
+    column-gap: 1rem;
+  }
+  
+  .masonry-item {
+    margin-bottom: 1rem;
+  }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+  .masonry-grid {
+    column-gap: 1.25rem;
+  }
+}
+
+/* Transiciones suaves para el reordenamiento */
+.masonry-item {
+  transition: all 0.3s ease;
+}
+
+/* Mejoras para la imagen en masonry */
+.project-image-container {
+  position: relative;
+  overflow: hidden;
+  border-radius: 0.75rem 0.75rem 0 0;
+}
+
+.project-image {
+  width: 100%;
+  height: auto;
+  min-height: 200px;
+  max-height: 300px;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.project-card.masonry-item:hover .project-image {
+  transform: scale(1.05);
+}
+
+/* Responsive columns para diferentes tama�os */
+@media (min-width: 640px) {
+  .masonry-grid.sm\:columns-2 {
+    column-count: 2;
+  }
+}
+
+@media (min-width: 768px) {
+  .masonry-grid.md\:columns-3 {
+    column-count: 3;
+  }
+}
+
+@media (min-width: 1024px) {
+  .masonry-grid.lg\:columns-4 {
+    column-count: 4;
+  }
+}
+
+@media (min-width: 1280px) {
+  .masonry-grid.xl\:columns-4 {
+    column-count: 4;
+  }
+}
+
+/* Ajustes para featured cards en masonry */
+.project-card.featured.masonry-item {
+  position: relative;
+  background: linear-gradient(135deg, rgba(255,215,0,0.1) 0%, rgba(255,165,0,0.1) 100%);
+  border: 2px solid rgba(255,215,0,0.3);
+}
+
+.project-card.featured.masonry-item::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  background: linear-gradient(45deg, #ffd700, #ff8c00, #ffd700);
+  border-radius: inherit;
+  z-index: -1;
+  filter: blur(8px);
+  opacity: 0.5;
+  animation: pulse 2s ease-in-out infinite alternate;
+}
+
+@keyframes pulse {
+  0% {
+    opacity: 0.5;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 0.8;
+    transform: scale(1.02);
+  }
+}
+
+/* Estilos para skeleton en Masonry */
+.card-skeleton.masonry-item {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  animation: skeleton-shimmer 1.5s ease-in-out infinite alternate;
+}
+
+.card-skeleton.masonry-item:nth-child(6n+1) {
+  min-height: 420px;
+}
+
+.card-skeleton.masonry-item:nth-child(6n+2) {
+  min-height: 300px;
+}
+
+.card-skeleton.masonry-item:nth-child(6n+3) {
+  min-height: 380px;
+}
+
+.card-skeleton.masonry-item:nth-child(6n+4) {
+  min-height: 360px;
+}
+
+.card-skeleton.masonry-item:nth-child(6n+5) {
+  min-height: 310px;
+}
+
+.card-skeleton.masonry-item:nth-child(6n+6) {
+  min-height: 400px;
+}
+
+.skeleton {
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+  background-size: 200% 100%;
+  animation: skeleton-loading 1.5s infinite;
+}
+
+@keyframes skeleton-shimmer {
+  0% {
+    opacity: 0.6;
+    transform: translateY(0);
+  }
+  100% {
+    opacity: 0.9;
+    transform: translateY(-4px);
+  }
+}
+
+@keyframes skeleton-loading {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}

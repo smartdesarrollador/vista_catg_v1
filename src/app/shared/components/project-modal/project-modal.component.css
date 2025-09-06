@@ -1,0 +1,154 @@
+/* Modal Container Styles */
+.modal-container {
+  /* Asegurar scroll suave y padding bottom */
+  scroll-behavior: smooth;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.3) transparent;
+}
+
+/* Custom scrollbar para webkit */
+.modal-container::-webkit-scrollbar {
+  width: 6px;
+}
+
+.modal-container::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.modal-container::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 3px;
+}
+
+.modal-container::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.5);
+}
+
+/* Asegurar que el contenido tenga espacio suficiente en la parte inferior */
+.modal-content {
+  margin-bottom: 2rem; /* Espacio adicional en la parte inferior */
+}
+
+/* Estilos para dispositivos móviles */
+@media (max-height: 600px) {
+  .modal-container {
+    max-height: 95vh;
+  }
+}
+
+@media (max-width: 768px) {
+  .modal-container {
+    max-height: 95vh;
+    margin: 0.5rem;
+  }
+  
+  .modal-content {
+    margin-bottom: 3rem; /* Más espacio en móviles */
+  }
+}
+
+/* Mejorar el spacing del contenido del proyecto */
+.project-info-section {
+  padding-bottom: 6rem !important; /* Forzar padding bottom */
+}
+
+/* Backdrop y efectos de partículas */
+.modal-backdrop {
+  backdrop-filter: blur(8px);
+  background: rgba(0, 0, 0, 0.7);
+}
+
+.modal-particles .particle {
+  width: 4px;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.6);
+  border-radius: 50%;
+  animation: float 6s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+    opacity: 0.6;
+  }
+  25% {
+    transform: translateY(-20px) rotate(90deg);
+    opacity: 1;
+  }
+  50% {
+    transform: translateY(-10px) rotate(180deg);
+    opacity: 0.8;
+  }
+  75% {
+    transform: translateY(-30px) rotate(270deg);
+    opacity: 1;
+  }
+}
+
+/* Botones de acción */
+.action-btn {
+  @apply px-6 py-3 text-white font-medium rounded-xl transition-all duration-300 hover:scale-105 hover:shadow-xl flex items-center justify-center min-w-max;
+}
+
+/* Badges de tecnología en el modal */
+.tech-badge-modal {
+  @apply inline-flex items-center px-4 py-2 rounded-full text-sm font-medium border-2 transition-all duration-300 hover:scale-105;
+}
+
+.tech-badge-modal.frontend {
+  @apply bg-blue-50 text-blue-700 border-blue-200 dark:bg-blue-900/30 dark:text-blue-300 dark:border-blue-600;
+}
+
+.tech-badge-modal.backend {
+  @apply bg-green-50 text-green-700 border-green-200 dark:bg-green-900/30 dark:text-green-300 dark:border-green-600;
+}
+
+.tech-badge-modal.database {
+  @apply bg-purple-50 text-purple-700 border-purple-200 dark:bg-purple-900/30 dark:text-purple-300 dark:border-purple-600;
+}
+
+.tech-badge-modal.mobile {
+  @apply bg-pink-50 text-pink-700 border-pink-200 dark:bg-pink-900/30 dark:text-pink-300 dark:border-pink-600;
+}
+
+/* Texto gradiente */
+.gradient-text {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Teclado shortcuts styling */
+.kbd {
+  @apply px-2 py-1 text-xs rounded border;
+}
+
+/* Responsive adjustments for content visibility */
+@media screen and (max-height: 800px) {
+  .modal-container {
+    max-height: 90vh;
+  }
+}
+
+@media screen and (max-height: 700px) {
+  .modal-container {
+    max-height: 95vh;
+  }
+  
+  .project-info-section {
+    padding-bottom: 8rem !important;
+  }
+}
+
+/* Asegurar visibilidad completa en pantallas muy pequeñas */
+@media screen and (max-height: 500px) {
+  .modal-container {
+    max-height: 98vh;
+    margin: 0.25rem;
+  }
+  
+  .project-info-section {
+    padding-bottom: 10rem !important;
+  }
+}

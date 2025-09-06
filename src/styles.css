@@ -1,0 +1,349 @@
+@import "ngx-toastr/toastr";
+/* @import "~animate.css/animate.min.css"; */
+/* @import "~quill/dist/quill.bubble.css"; */
+/* @import "~quill/dist/quill.snow.css"; */
+
+/* Añadir importaciones de Swiper al inicio del archivo */
+@import "swiper/css";
+@import "swiper/css/navigation";
+@import "swiper/css/pagination";
+@import "swiper/css/effect-fade";
+
+/* You can add global styles to this file, and also import other style files */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Estilos para asegurar ancho completo */
+body,
+html {
+}
+
+.w-screen {
+}
+
+body {
+  /* background-color: #c6d8e7; */
+  background-color: #fff;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* 🌌 EFECTOS DE PARTÍCULAS GLOBALES PARA TODO EL BODY */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: 
+    radial-gradient(circle at 15% 25%, rgba(255, 0, 110, 0.15) 0%, transparent 50%),
+    radial-gradient(circle at 85% 75%, rgba(131, 56, 236, 0.15) 0%, transparent 50%),
+    radial-gradient(circle at 35% 85%, rgba(58, 134, 255, 0.12) 0%, transparent 50%),
+    radial-gradient(circle at 65% 15%, rgba(6, 255, 165, 0.12) 0%, transparent 50%),
+    radial-gradient(circle at 85% 35%, rgba(255, 190, 11, 0.12) 0%, transparent 50%);
+  background-size: 120% 120%, 180% 180%, 160% 160%, 140% 140%, 130% 130%;
+  pointer-events: none;
+  z-index: -1;
+  animation: global-particle-drift 40s ease-in-out infinite;
+}
+
+body::after {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: conic-gradient(
+    from 0deg,
+    rgba(255, 0, 110, 0.05),
+    rgba(131, 56, 236, 0.05),
+    rgba(58, 134, 255, 0.05),
+    rgba(6, 255, 165, 0.05),
+    rgba(255, 190, 11, 0.05),
+    rgba(255, 0, 110, 0.05)
+  );
+  background-size: 200% 200%;
+  pointer-events: none;
+  z-index: -1;
+  animation: global-conic-rotation 60s linear infinite;
+  opacity: 0.3;
+}
+
+@keyframes global-particle-drift {
+  0%, 100% {
+    background-position: 
+      15% 25%, 85% 75%, 35% 85%, 65% 15%, 85% 35%;
+    transform: scale(1) rotate(0deg);
+    filter: hue-rotate(0deg);
+  }
+  25% {
+    background-position: 
+      25% 35%, 75% 65%, 45% 75%, 75% 25%, 75% 45%;
+    transform: scale(1.02) rotate(1deg);
+    filter: hue-rotate(90deg);
+  }
+  50% {
+    background-position: 
+      35% 50%, 65% 50%, 55% 65%, 85% 35%, 65% 55%;
+    transform: scale(0.98) rotate(-1deg);
+    filter: hue-rotate(180deg);
+  }
+  75% {
+    background-position: 
+      50% 65%, 50% 35%, 65% 50%, 95% 50%, 50% 65%;
+    transform: scale(1.01) rotate(0.5deg);
+    filter: hue-rotate(270deg);
+  }
+}
+
+@keyframes global-conic-rotation {
+  0% {
+    background-position: 0% 50%;
+    transform: rotate(0deg) scale(1);
+  }
+  25% {
+    background-position: 100% 0%;
+    transform: rotate(90deg) scale(1.1);
+  }
+  50% {
+    background-position: 100% 100%;
+    transform: rotate(180deg) scale(0.9);
+  }
+  75% {
+    background-position: 0% 100%;
+    transform: rotate(270deg) scale(1.05);
+  }
+  100% {
+    background-position: 0% 50%;
+    transform: rotate(360deg) scale(1);
+  }
+}
+
+/* 🌌 ORBES FLOTANTES GLOBALES FIJOS */
+body {
+  background-image: 
+    radial-gradient(400px circle at 5% 20%, rgba(255, 0, 110, 0.1), transparent),
+    radial-gradient(300px circle at 95% 80%, rgba(131, 56, 236, 0.1), transparent),
+    radial-gradient(350px circle at 20% 90%, rgba(58, 134, 255, 0.08), transparent),
+    radial-gradient(250px circle at 80% 10%, rgba(6, 255, 165, 0.08), transparent),
+    radial-gradient(450px circle at 60% 60%, rgba(255, 190, 11, 0.06), transparent),
+    radial-gradient(200px circle at 40% 30%, rgba(255, 0, 110, 0.05), transparent),
+    radial-gradient(320px circle at 75% 40%, rgba(131, 56, 236, 0.05), transparent);
+  background-size: 100% 100%;
+  background-attachment: fixed;
+  animation: global-orbs-float 50s ease-in-out infinite;
+}
+
+@keyframes global-orbs-float {
+  0%, 100% {
+    background-position: 5% 20%, 95% 80%, 20% 90%, 80% 10%, 60% 60%, 40% 30%, 75% 40%;
+  }
+  25% {
+    background-position: 10% 30%, 90% 70%, 30% 80%, 85% 20%, 65% 50%, 45% 40%, 70% 50%;
+  }
+  50% {
+    background-position: 15% 25%, 85% 75%, 25% 85%, 90% 15%, 55% 70%, 35% 35%, 80% 45%;
+  }
+  75% {
+    background-position: 8% 15%, 88% 85%, 35% 95%, 75% 5%, 70% 40%, 50% 25%, 65% 35%;
+  }
+}
+
+/* Dark mode body styles */
+:root.dark body {
+  background-color: #1a1a1a;
+  color: #e5e5e5;
+}
+
+/* Dark mode enhanced particle effects */
+:root.dark body::before {
+  background: 
+    radial-gradient(circle at 15% 25%, rgba(255, 0, 110, 0.25) 0%, transparent 50%),
+    radial-gradient(circle at 85% 75%, rgba(131, 56, 236, 0.25) 0%, transparent 50%),
+    radial-gradient(circle at 35% 85%, rgba(58, 134, 255, 0.2) 0%, transparent 50%),
+    radial-gradient(circle at 65% 15%, rgba(6, 255, 165, 0.2) 0%, transparent 50%),
+    radial-gradient(circle at 85% 35%, rgba(255, 190, 11, 0.2) 0%, transparent 50%);
+}
+
+:root.dark body::after {
+  opacity: 0.5;
+  background: conic-gradient(
+    from 0deg,
+    rgba(255, 0, 110, 0.1),
+    rgba(131, 56, 236, 0.1),
+    rgba(58, 134, 255, 0.1),
+    rgba(6, 255, 165, 0.1),
+    rgba(255, 190, 11, 0.1),
+    rgba(255, 0, 110, 0.1)
+  );
+}
+
+/* Dark mode enhanced orbs */
+:root.dark body {
+  background-image: 
+    radial-gradient(500px circle at 5% 20%, rgba(255, 0, 110, 0.2), transparent),
+    radial-gradient(400px circle at 95% 80%, rgba(131, 56, 236, 0.2), transparent),
+    radial-gradient(450px circle at 20% 90%, rgba(58, 134, 255, 0.15), transparent),
+    radial-gradient(350px circle at 80% 10%, rgba(6, 255, 165, 0.15), transparent),
+    radial-gradient(550px circle at 60% 60%, rgba(255, 190, 11, 0.12), transparent),
+    radial-gradient(300px circle at 40% 30%, rgba(255, 0, 110, 0.1), transparent),
+    radial-gradient(420px circle at 75% 40%, rgba(131, 56, 236, 0.1), transparent);
+}
+
+/* Variables globales para colores configurables */
+:root {
+  --color-primario: #3b82f6;
+  --color-primario-rgb: 59, 130, 246;
+  --color-secundario: #10b981;
+  --color-secundario-rgb: 16, 185, 129;
+  --color-fondo: #f3f4f6;
+  --color-fondo-rgb: 243, 244, 246;
+  --color-texto: #1f2937;
+  --color-texto-rgb: 31, 41, 55;
+  
+  /* 🌈 PALETA DE COLORES REVOLUCIONARIA GLOBAL */
+  --magenta-neon: #ff006e;
+  --purple-electric: #8338ec;
+  --blue-sky: #3a86ff;
+  --green-aqua: #06ffa5;
+  --orange-solar: #ffbe0b;
+  
+  /* Gradientes Especiales Globales */
+  --holographic: linear-gradient(45deg, #ff006e, #8338ec, #3a86ff, #06ffa5, #ffbe0b, #ff006e);
+  --neural: conic-gradient(from 0deg, #ff006e, #8338ec, #3a86ff, #06ffa5, #ffbe0b, #ff006e);
+  --morphing: radial-gradient(circle, #ff006e, #8338ec, #3a86ff);
+  --iridescent: linear-gradient(90deg, #ff006e 0%, #8338ec 25%, #3a86ff 50%, #06ffa5 75%, #ffbe0b 100%);
+}
+
+/* Dark mode variables */
+:root.dark {
+  --color-primario: #60a5fa;
+  --color-primario-rgb: 96, 165, 250;
+  --color-secundario: #34d399;
+  --color-secundario-rgb: 52, 211, 153;
+  --color-fondo: #1f2937;
+  --color-fondo-rgb: 31, 41, 55;
+  --color-texto: #f9fafb;
+  --color-texto-rgb: 249, 250, 251;
+}
+
+/* Clases para usar colores dinámicos */
+.color-primario {
+  color: var(--color-primario);
+}
+
+.bg-primario {
+  background-color: var(--color-primario);
+}
+
+.color-secundario {
+  color: var(--color-secundario);
+}
+
+.bg-secundario {
+  background-color: var(--color-secundario);
+}
+
+.color-texto {
+  color: var(--color-texto);
+}
+
+/* Transiciones suaves para enlaces y botones */
+a,
+button {
+  transition: all 0.3s ease-in-out;
+}
+
+/* Efecto hover para enlaces con el color primario */
+a:hover {
+  color: var(--color-primario);
+}
+
+@layer components {
+  .boton-naranja {
+    @apply text-naranja bg-naranja_claro hover:bg-naranja hover:text-white focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-10 py-2.5 mr-2 mb-2 focus:outline-none;
+  }
+
+  .boton-verde {
+    @apply text-verde bg-verde_claro hover:bg-verde hover:text-white focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-10 py-2.5 mr-2 mb-2 focus:outline-none;
+  }
+
+  .boton-azul {
+    @apply text-azul bg-azul_claro hover:bg-azul hover:text-white focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-10 py-2.5 mr-2 mb-2 focus:outline-none;
+  }
+
+  .boton-rojo {
+    @apply text-rojo bg-rojo_claro hover:bg-rojo hover:text-white focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-10 py-2.5 mr-2 mb-2 focus:outline-none;
+  }
+
+  .titulo {
+    @apply text-2xl font-bold;
+  }
+
+  .subtitulo {
+    @apply text-xl font-bold;
+  }
+
+  .texto {
+    @apply text-base font-normal;
+  }
+
+  .titulo-azul {
+    @apply text-2xl font-bold text-azul;
+  }
+
+  .subtitulo-azul {
+    @apply text-xl font-bold text-azul;
+  }
+
+  .texto-azul {
+    @apply text-base font-normal text-azul;
+  }
+
+  .titulo-naranja {
+    @apply text-2xl font-bold text-naranja;
+  }
+
+  .subtitulo-naranja {
+    @apply text-xl font-bold text-naranja;
+  }
+
+  .texto-naranja {
+    @apply text-base font-normal text-naranja;
+  }
+
+  .titulo-gris {
+    @apply text-2xl font-bold text-gray-400;
+  }
+
+  .subtitulo-gris {
+    @apply text-xl font-bold text-gray-400;
+  }
+
+  .texto-gris {
+    @apply text-base font-normal text-gray-400;
+  }
+
+  .titulo-rojo {
+    @apply text-2xl font-bold text-rojo;
+  }
+
+  .subtitulo-rojo {
+    @apply text-xl font-bold text-rojo;
+  }
+
+  .texto-rojo {
+    @apply text-base font-normal text-rojo;
+  }
+
+  .alerta-rojo {
+    @apply p-4 mb-4 text-sm text-rojo rounded-lg bg-red-50;
+  }
+}
+
+@layer utilities {
+}

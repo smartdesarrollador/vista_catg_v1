@@ -1,0 +1,105 @@
+<!-- Button Variant -->
+<div *ngIf="variant === 'button'" class="theme-toggle-wrapper">
+  <button
+    (click)="onThemeToggle()"
+    class="theme-toggle-btn"
+    [title]="getTooltipText()"
+    [attr.aria-label]="getTooltipText()"
+  >
+    <div 
+      class="theme-icon"
+      [@rotateIcon]="themeService.theme()"
+      [@pulseAnimation]="'active'"
+    >
+      {{ themeService.getThemeIcon() }}
+    </div>
+    
+    <span *ngIf="showLabel" class="theme-label">
+      {{ themeService.getThemeLabel() }}
+    </span>
+    
+    <!-- Ripple Effect -->
+    <div class="ripple-effect"></div>
+  </button>
+</div>
+
+<!-- Compact Variant -->
+<div *ngIf="variant === 'compact'" class="theme-toggle-compact">
+  <button
+    (click)="onThemeToggle()"
+    class="compact-btn"
+    [title]="getTooltipText()"
+    [attr.aria-label]="getTooltipText()"
+  >
+    <span 
+      class="compact-icon"
+      [@rotateIcon]="themeService.theme()"
+    >
+      {{ themeService.getThemeIcon() }}
+    </span>
+  </button>
+</div>
+
+<!-- Dropdown Variant -->
+<div *ngIf="variant === 'dropdown'" class="theme-dropdown-wrapper">
+  <div class="dropdown-container">
+    <button
+      class="dropdown-trigger"
+      [title]="getTooltipText()"
+      (click)="onThemeToggle()"
+    >
+      <span 
+        class="dropdown-icon"
+        [@rotateIcon]="themeService.theme()"
+      >
+        {{ themeService.getThemeIcon() }}
+      </span>
+      
+      <span *ngIf="showLabel" class="dropdown-label">
+        {{ themeService.getThemeLabel() }}
+      </span>
+      
+      <svg 
+        class="dropdown-arrow" 
+        viewBox="0 0 20 20" 
+        fill="currentColor"
+      >
+        <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+      </svg>
+    </button>
+    
+    <!-- Dropdown Menu -->
+    <div class="dropdown-menu">
+      <button
+        *ngFor="let option of getAvailableThemes(); trackBy: trackByTheme"
+        (click)="onThemeSelect(option.value)"
+        class="dropdown-item"
+        [class.active]="themeService.theme() === option.value"
+      >
+        <span class="option-icon">{{ option.icon }}</span>
+        <span class="option-label">{{ option.label }}</span>
+        
+        <!-- Active Indicator -->
+        <div 
+          *ngIf="themeService.theme() === option.value" 
+          class="active-indicator"
+        >
+          ✓
+        </div>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Theme Preview Indicator -->
+<div 
+  class="theme-preview-indicator"
+  [class.dark-mode]="themeService.isDarkMode()"
+>
+  <div class="preview-dot light-dot"></div>
+  <div class="preview-dot dark-dot"></div>
+  <div 
+    class="preview-slider"
+    [class.dark-active]="themeService.isDarkMode()"
+  ></div>
+</div>
