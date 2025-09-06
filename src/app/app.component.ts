@@ -30,7 +30,7 @@ export class AppComponent implements OnInit {
   ngOnInit(): void {
     if (isPlatformBrowser(this.platformId)) {
       import('aos').then(AOS => {
-        AOS.init({
+        (AOS as any).default.init({
           duration: 800,
           easing: 'ease-in-out',
           once: true,
